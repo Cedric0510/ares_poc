@@ -1,0 +1,11 @@
+[
+  { "seq": 0, "type": "MATCH_STARTED", "robots": ["A1", "B2"] },
+  { "seq": 1, "type": "ROBOT_MOVED", "robot": "A1", "x": 10.0, "y": 50.0 },
+  { "seq": 2, "type": "ROBOT_MOVED", "robot": "B2", "x": 90.0, "y": 50.0 },
+  { "seq": 3, "type": "ROBOT_MOVED", "robot": "A1", "x": 14.2, "y": 48.0 },
+  { "seq": 4, "type": "ROBOT_SHOT", "robot": "B2", "hit": "A1" },
+  { "seq": 5, "type": "ROBOT_DAMAGED", "robot": "A1", "hp": 75, "alive": true },
+  { "seq": 6, "type": "ROBOT_MOVED", "robot": "B2", "x": 61.5, "y": 33.1 },
+  { "seq": 7, "type": "ROBOT_SHOT", "robot": "A1", "hit": "B2" },
+  { "seq": 8, "type": "ROBOT_DAMAGED", "robot": "B2", "hp": 0, "alive": false }
+]
