@@ -28,6 +28,10 @@ public class Robot {
         return energy;
     }
 
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
     public int getHp() {
         return hp;
     }
