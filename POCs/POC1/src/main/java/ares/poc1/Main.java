@@ -104,6 +104,24 @@ public class Main {
                 }
 
                 System.out.println(gson.toJson(event));
+            } else if (action.getAction().equals("MINE")) {
+                JsonObject event = new JsonObject();
+                event.addProperty("seq", sequence);
+                sequence++;
+                event.addProperty("type", "ACTION_REJECTED");
+                event.addProperty("robot_id", robot.getId());
+
+                if (robot.getHp() <= 0) {
+                    event.addProperty("reason", "ROBOT_DEAD");
+                } else if (robot.getEnergy() <= 0) {
+                    event.addProperty("reason", "NO_ENERGY");
+                } else {
+                    robot.setEnergy(robot.getEnergy() - 1);
+                    event.addProperty("reason", "NO_CRYSTAL");
+                    event.addProperty("energy", robot.getEnergy());
+                }
+
+                System.out.println(gson.toJson(event));
             } else {
                 System.err.println("Action non prise en charge : " + action.getAction());
             }
