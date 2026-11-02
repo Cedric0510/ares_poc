@@ -7,6 +7,7 @@ public class Action {
     private String robotId;
 
     private String action;
+    private Double angle;
 
     public String getRobotId() {
         return robotId;
@@ -14,5 +15,9 @@ public class Action {
 
     public String getAction() {
         return action;
+    }
+
+    public Double getAngle() {
+        return angle;
     }
 }

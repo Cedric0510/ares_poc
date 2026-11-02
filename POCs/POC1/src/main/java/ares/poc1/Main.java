@@ -67,6 +67,43 @@ public class Main {
                 event.addProperty("robot_id", robot.getId());
                 event.addProperty("energy", robot.getEnergy());
                 System.out.println(gson.toJson(event));
+            } else if (action.getAction().equals("MOVE")) {
+                if (action.getAngle() == null || !Double.isFinite(action.getAngle())) {
+                    System.err.println("Ligne invalide : angle manquant ou incorrect");
+                    continue;
+                }
+
+                JsonObject event = new JsonObject();
+                event.addProperty("seq", sequence);
+                sequence++;
+                event.addProperty("robot_id", robot.getId());
+
+                if (robot.getHp() <= 0) {
+                    event.addProperty("type", "ACTION_REJECTED");
+                    event.addProperty("reason", "ROBOT_DEAD");
+                } else if (robot.getEnergy() <= 0) {
+                    event.addProperty("type", "ACTION_REJECTED");
+                    event.addProperty("reason", "NO_ENERGY");
+                } else {
+                    double x = robot.getX() + state.getMoveSpeed() * Math.cos(action.getAngle());
+                    double y = robot.getY() + state.getMoveSpeed() * Math.sin(action.getAngle());
+
+                    x = Math.max(0, Math.min(x, state.getWorld().getW()));
+                    y = Math.max(0, Math.min(y, state.getWorld().getH()));
+
+                    robot.setX(x);
+                    robot.setY(y);
+                    robot.setHeading(action.getAngle());
+                    robot.setEnergy(robot.getEnergy() - 1);
+
+                    event.addProperty("type", "ROBOT_MOVED");
+                    event.addProperty("x", robot.getX());
+                    event.addProperty("y", robot.getY());
+                    event.addProperty("heading", robot.getHeading());
+                    event.addProperty("energy", robot.getEnergy());
+                }
+
+                System.out.println(gson.toJson(event));
             } else {
                 System.err.println("Action non prise en charge : " + action.getAction());
             }
