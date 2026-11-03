@@ -78,6 +78,8 @@ public class Main {
                 mineRobot(robot);
             } else if (action.getAction().equals("SHOOT")) {
                 shootRobot(robot, action);
+            } else if (action.getAction().equals("TELEPORT")) {
+                teleportRobot(robot, action);
             } else {
                 System.err.println("Action non prise en charge : " + action.getAction());
             }
@@ -208,5 +210,37 @@ public class Main {
             damageEvent.addProperty("hp", target.getHp());
             System.out.println(gson.toJson(damageEvent));
         }
+    }
+
+    private void teleportRobot(Robot robot, Action action) {
+        JsonObject event = new JsonObject();
+        event.addProperty("seq", sequence);
+        sequence++;
+        event.addProperty("robot_id", robot.getId());
+
+        if (robot.getHp() <= 0) {
+            event.addProperty("type", "ACTION_REJECTED");
+            event.addProperty("reason", "ROBOT_DEAD");
+        } else if (robot.getEnergy() <= 0) {
+            event.addProperty("type", "ACTION_REJECTED");
+            event.addProperty("reason", "NO_ENERGY");
+        } else if (action.getX() == null || action.getY() == null
+                || !Double.isFinite(action.getX()) || !Double.isFinite(action.getY())
+                || action.getX() < 0 || action.getX() > state.getWorld().getW()
+                || action.getY() < 0 || action.getY() > state.getWorld().getH()) {
+            event.addProperty("type", "ACTION_REJECTED");
+            event.addProperty("reason", "INVALID_POSITION");
+        } else {
+            robot.setX(action.getX());
+            robot.setY(action.getY());
+            robot.setEnergy(robot.getEnergy() - 1);
+
+            event.addProperty("type", "ROBOT_TELEPORTED");
+            event.addProperty("x", robot.getX());
+            event.addProperty("y", robot.getY());
+            event.addProperty("energy", robot.getEnergy());
+        }
+
+        System.out.println(gson.toJson(event));
     }
 }

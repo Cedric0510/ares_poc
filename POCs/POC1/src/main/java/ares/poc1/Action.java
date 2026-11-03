@@ -8,6 +8,8 @@ public class Action {
 
     private String action;
     private Double angle;
+    private Double x;
+    private Double y;
 
     public String getRobotId() {
         return robotId;
@@ -19,5 +21,13 @@ public class Action {
 
     public Double getAngle() {
         return angle;
+    }
+
+    public Double getX() {
+        return x;
+    }
+
+    public Double getY() {
+        return y;
     }
 }
