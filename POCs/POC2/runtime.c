@@ -1,3 +1,4 @@
+#include <poll.h>
 #include <signal.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -40,6 +41,20 @@ int main(int argc, char *argv[]) {
     }
 
     close(output_pipe[1]);
+
+    struct pollfd output_poll;
+    output_poll.fd = output_pipe[0];
+    output_poll.events = POLLIN;
+    output_poll.revents = 0;
+
+    int poll_result = poll(&output_poll, 1, 500);
+    ssize_t bytes_read = 0;
+
+    if (poll_result > 0) {
+        char first_byte;
+        bytes_read = read(output_pipe[0], &first_byte, 1);
+    }
+
     kill(child_pid, SIGKILL);
 
     if (waitpid(child_pid, NULL, 0) == -1) {
@@ -49,6 +64,22 @@ int main(int argc, char *argv[]) {
     }
 
     close(output_pipe[0]);
-    printf("Processus enfant termine\n");
+
+    if (poll_result == -1) {
+        perror("poll");
+        return 1;
+    }
+
+    if (bytes_read == -1) {
+        perror("read");
+        return 1;
+    }
+
+    if (bytes_read > 0) {
+        printf("OK\n");
+    } else {
+        printf("TIMEOUT\n");
+    }
+
     return 0;
 }
