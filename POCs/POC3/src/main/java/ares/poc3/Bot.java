@@ -1,16 +1,20 @@
 package ares.poc3;
 
 public class Bot {
-    private final String id;
+    private final int number;
     private double elo;
 
-    public Bot(String id) {
-        this.id = id;
+    public Bot(int number) {
+        this.number = number;
         this.elo = 1000;
     }
 
     public String getId() {
-        return id;
+        return "B" + number;
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     public double getElo() {
