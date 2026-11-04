@@ -20,4 +20,8 @@ public class Bot {
     public double getElo() {
         return elo;
     }
+
+    public void setElo(double elo) {
+        this.elo = elo;
+    }
 }

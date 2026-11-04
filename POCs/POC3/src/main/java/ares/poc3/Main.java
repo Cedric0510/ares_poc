@@ -14,9 +14,15 @@ public class Main {
         List<Match> matches = RoundRobin.generateMatches(bots);
 
         for (Match match : matches) {
+            Elo.updateScores(match);
             System.out.println(match.getFirstBot().getId() + " contre "
                     + match.getSecondBot().getId() + " : "
                     + match.getWinner().getId() + " gagne");
+        }
+
+        System.out.println("Scores Elo :");
+        for (Bot bot : bots) {
+            System.out.println(bot.getId() + " : " + bot.getElo());
         }
     }
 }
