@@ -9,6 +9,14 @@ public class Match {
         this.secondBot = secondBot;
     }
 
+    public Bot getFirstBot() {
+        return firstBot;
+    }
+
+    public Bot getSecondBot() {
+        return secondBot;
+    }
+
     public Bot getWinner() {
         if (firstBot.getNumber() < secondBot.getNumber()) {
             return firstBot;

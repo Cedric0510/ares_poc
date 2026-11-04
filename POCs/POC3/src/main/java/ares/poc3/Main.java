@@ -11,11 +11,12 @@ public class Main {
             bots.add(new Bot(number));
         }
 
-        for (Bot bot : bots) {
-            System.out.println(bot.getId() + " : " + bot.getElo());
-        }
+        List<Match> matches = RoundRobin.generateMatches(bots);
 
-        Match match = new Match(bots.get(0), bots.get(1));
-        System.out.println("B1 contre B2 : " + match.getWinner().getId() + " gagne");
+        for (Match match : matches) {
+            System.out.println(match.getFirstBot().getId() + " contre "
+                    + match.getSecondBot().getId() + " : "
+                    + match.getWinner().getId() + " gagne");
+        }
     }
 }
