@@ -16,10 +16,7 @@ public class Main {
                     + match.getWinner().getId() + " gagne");
         }
 
-        System.out.println("Scores Elo :");
-        for (Bot bot : bots) {
-            System.out.println(bot.getId() + " : " + bot.getElo());
-        }
+        printRanking("Classement round-robin :", bots);
 
         List<Bot> eliminationBots = createBots();
         List<Match> eliminationMatches = SingleElimination.generateMatches(eliminationBots);
@@ -34,6 +31,7 @@ public class Main {
 
         Match finalMatch = eliminationMatches.get(eliminationMatches.size() - 1);
         System.out.println("Vainqueur : " + finalMatch.getWinner().getId());
+        printRanking("Classement elimination directe :", eliminationBots);
     }
 
     private static List<Bot> createBots() {
@@ -44,5 +42,15 @@ public class Main {
         }
 
         return bots;
+    }
+
+    private static void printRanking(String title, List<Bot> bots) {
+        bots.sort((firstBot, secondBot) -> Double.compare(secondBot.getElo(), firstBot.getElo()));
+
+        System.out.println(title);
+        for (int index = 0; index < bots.size(); index++) {
+            Bot bot = bots.get(index);
+            System.out.println("#" + (index + 1) + " " + bot.getId() + " " + Math.round(bot.getElo()));
+        }
     }
 }
