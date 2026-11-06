@@ -54,3 +54,23 @@ export function createInitialState(event: MatchStartedEvent): MatchState {
 
     return state;
 }
+
+export function getFinalState(events: MatchEvent[]): MatchState {
+    let state: MatchState = {};
+
+    for (const event of events) {
+        if (event.type === "MATCH_STARTED") {
+            state = createInitialState(event);
+        } else if (event.type === "ROBOT_MOVED") {
+            const robot = state[event.robot];
+            robot.x = event.x;
+            robot.y = event.y;
+        } else if (event.type === "ROBOT_DAMAGED") {
+            const robot = state[event.robot];
+            robot.hp = event.hp;
+            robot.alive = event.alive;
+        }
+    }
+
+    return state;
+}
